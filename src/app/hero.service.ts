@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, Optional } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Hero } from './hero';
 // import { HEROES } from './mock-heroes';
@@ -19,7 +20,10 @@ export class HeroService {
   constructor(
     private messageService: MessageService,
     private http: HttpClient,
-  ) { }
+    @Optional() @Inject(APP_BASE_HREF) origin: string
+  ) {
+    this.heroesUrl = `${origin}${this.heroesUrl}`;
+  }
 
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl)
